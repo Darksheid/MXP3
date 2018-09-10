@@ -5,7 +5,6 @@ from mutagen.id3 import ID3
 from mutagen.mp3 import MP3
 from tkinter import *
 import math
-import time
 ################################################################################
 
 ###################################variables##########################################
@@ -77,7 +76,7 @@ def pause_playsong(event):
             ppflag=0
             imageupdate(ppflag)
             
-        print(pygame.mixer.music.get_busy())
+        #print(pygame.mixer.music.get_busy())
         root.title("Now Playing- "+realnames[index]+"  -MPX3 ")
 
         
@@ -127,7 +126,8 @@ def stopsong(event):
     rflag=0
     pygame.mixer.music.stop()
     imageupdate(1)
-    repeatbutton.config(text="Start Repeating")
+    playpic=PhotoImage(file="D:\\player\\play.png")
+    pause_playbutton = Button(frame_btn,image=playpic)
     root.title("Press PLAY to start---MPX3 ver0.03")
     listbox.activate(index)
     
@@ -136,15 +136,20 @@ def repeatsong(event):
     global index,rflag,ppflag
     if ppflag not in [None,1]:
         if rflag==0:
-            repeatbutton.config(text="Stop Repeating")
+            repeatpic=PhotoImage(file="D:\\player\\repeat.png")
+            repeatbutton.config(image=repeatpic)
+            repeatbutton.image=repeatpic
             pygame.mixer.music.stop()
             pygame.mixer.music.load(listofsongs[index])
             pygame.mixer.music.play(-1)
             rflag=1
-        else:
-            repeatbutton.config(text="Start Repeating")
+        elif rflag==1:
+            stoppic=PhotoImage(file="D:\\player\\stoprepeat.png")
+            repeatbutton.config(image=stoppic)
+            repeatbutton.image=stoppic
             loadandplay(index)
             rflag=0
+        #print(rflag)
 
 def selectsong(event):
     global index,ppflag
@@ -166,7 +171,7 @@ def imageupdate(s):
 def loadandplay(index):
     pygame.mixer.music.load(listofsongs[index])
     pygame.mixer.music.play()
-    print(pygame.mixer.music.get_busy())
+    #print(pygame.mixer.music.get_busy())
     updatelabel()
 
 
@@ -191,7 +196,7 @@ xScroll = Scrollbar(frameLB, orient=HORIZONTAL)
 xScroll.pack(side = BOTTOM, fill = X)
 listbox = Listbox(frameLB, xscrollcommand=xScroll.set,
                   yscrollcommand=yScroll.set,
-                  width=80, height=15,bg="grey",fg="white")
+                  width=80, height=15,bg="black",fg="white")
 listbox.pack()
 
 realnames.reverse()
@@ -222,7 +227,8 @@ playpic=PhotoImage(file="D:\\player\\play.png")
 pause_playbutton = Button(frame_btn,image=playpic)
 pause_playbutton.grid(row=0, column=3, padx=10, pady=10)
 
-repeatbutton = Button(frame_btn,text='startRepeat Music')
+repeatpic=PhotoImage(file="D:\\player\\stoprepeat.png")
+repeatbutton = Button(frame_btn,image=repeatpic)
 repeatbutton.grid(row=0, column=4, padx=10, pady=10)
 
 
